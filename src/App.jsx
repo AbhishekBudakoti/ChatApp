@@ -3,6 +3,7 @@ import List from "./components/list/list";
 import Chat from "./components/chat/chat";
 import Detail from "./components/detail/detail";
 import Login from "./components/login/login";
+import ProfileSetup from "./components/profileSetup/profileSetup";
 import Notification from "./components/notification/notification";
 import { onAuthStateChanged } from "firebase/auth";
 import { useUserStore } from "./lib/userStore";
@@ -29,18 +30,26 @@ export const App = () => {
     return <div className="loading">Loading...</div>;
   }
 
+  const needsProfileSetup =
+    currentUser &&
+    (!currentUser?.username?.trim?.() || !currentUser?.bio?.trim?.());
+
   return (
     <div className="container">
       {currentUser ? (
-        <>
-          <List />
-          {chatId && (
-            <>
-              <Chat onToggleDetail={() => setShowDetail((prev) => !prev)} />
-              {showDetail && <Detail />}
-            </>
-          )}
-        </>
+        needsProfileSetup ? (
+          <ProfileSetup />
+        ) : (
+          <>
+            <List />
+            {chatId && (
+              <>
+                <Chat onToggleDetail={() => setShowDetail((prev) => !prev)} />
+                {showDetail && <Detail />}
+              </>
+            )}
+          </>
+        )
       ) : (
         <Login />
       )}

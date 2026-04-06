@@ -2,15 +2,16 @@ import "./detail.css";
 import { db, FIREBASE_COLLECTIONS, FIREBASE_FIELDS } from "../../lib/firbase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
+import { toast } from "react-toastify";
+import { useRef } from "react";
 
 
 import { 
     doc, 
+    getDoc,
     updateDoc, 
     arrayRemove, 
-    arrayUnion,
-    deleteDoc,
-    getDoc
+    arrayUnion
 } from "firebase/firestore";
 
 const Detail = () => {
@@ -18,6 +19,7 @@ const Detail = () => {
     const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, changeBlock, resetChat } = useChatStore();
 
     const { currentUser, fetchUserInfo } = useUserStore();
+    const deleteConfirmRef = useRef(false);
 
     const handleBlock = async () => {
         if (!user || !currentUser || isCurrentUserBlocked) return;
@@ -40,46 +42,36 @@ const Detail = () => {
     };
 
     const handleDeleteChat = async () => {
-        if (!chatId || !user || !currentUser) return;
-        
+        if (!chatId || !currentUser) return;
+
+        if (!deleteConfirmRef.current) {
+            deleteConfirmRef.current = true;
+            toast.warn("Press Delete Chat again to confirm", { autoClose: 2200 });
+            setTimeout(() => {
+                deleteConfirmRef.current = false;
+            }, 2300);
+            return;
+        }
 
         try {
-            // Delete the chat document
-            const chatRef = doc(db, FIREBASE_COLLECTIONS.CHATS, chatId);
-            await deleteDoc(chatRef);
-
-            // Remove chat from current user's USER_CHATS
             const currentUserChatsRef = doc(db, FIREBASE_COLLECTIONS.USER_CHATS, currentUser.uid);
             const currentUserChatsSnap = await getDoc(currentUserChatsRef);
-            
+
             if (currentUserChatsSnap.exists()) {
-                const userChats = currentUserChatsSnap.data()[FIREBASE_FIELDS.CHATS] || [];
-                const filteredChats = userChats.filter(
-                    (chat) => chat[FIREBASE_FIELDS.CHAT_ID] !== chatId
-                );
+                const userChats = currentUserChatsSnap.data()?.[FIREBASE_FIELDS.CHATS] || [];
+                const filteredChats = userChats.filter((item) => item[FIREBASE_FIELDS.CHAT_ID] !== chatId);
                 await updateDoc(currentUserChatsRef, {
-                    [FIREBASE_FIELDS.CHATS]: filteredChats
+                    [FIREBASE_FIELDS.CHATS]: filteredChats,
                 });
             }
 
-            // Remove chat from other user's USER_CHATS
-            const otherUserChatsRef = doc(db, FIREBASE_COLLECTIONS.USER_CHATS, user.uid);
-            const otherUserChatsSnap = await getDoc(otherUserChatsRef);
-            
-            if (otherUserChatsSnap.exists()) {
-                const userChats = otherUserChatsSnap.data()[FIREBASE_FIELDS.CHATS] || [];
-                const filteredChats = userChats.filter(
-                    (chat) => chat[FIREBASE_FIELDS.CHAT_ID] !== chatId
-                );
-                await updateDoc(otherUserChatsRef, {
-                    [FIREBASE_FIELDS.CHATS]: filteredChats
-                });
-            }
-
-            // Close the chat page by resetting the chat state
             resetChat();
+            toast.success("Chat removed from your list");
         } catch (err) {
-            console.error("Error deleting chat:", err);
+            console.error("Error removing chat:", err);
+            toast.error("Failed to remove chat");
+        } finally {
+            deleteConfirmRef.current = false;
         }
     };
 
@@ -91,7 +83,7 @@ const Detail = () => {
                 <h2>{user?.[FIREBASE_FIELDS.USERNAME]}</h2>
               
            
-                <p>Lorem ipsum dolor sit amet ectetur adipisicing elit.</p>
+                <p>{user?.[FIREBASE_FIELDS.BIO] || "No bio yet"}</p>
             </div>
            
 
@@ -137,15 +129,20 @@ const Detail = () => {
                     </div>
                 </div>
 
-                <button 
+                <button
+                    className="block-btn"
                     onClick={handleBlock}
                     disabled={isCurrentUserBlocked || !user}
                 >
                     {isCurrentUserBlocked ? "you are blocked" :isReceiverBlocked ? "User blocked" 
                     :"Block User"}
                 </button>
-                <button onClick={handleDeleteChat}>
-                 Delete Chat
+                <button
+                    className="delete-btn"
+                    onClick={handleDeleteChat}
+                    disabled={!chatId}
+                >
+                    Delete Chat
                 </button>
                
             </div>

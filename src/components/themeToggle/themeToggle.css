@@ -1,0 +1,16 @@
+.themeToggle {
+  color: white;
+  font-size: 22px;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  background-color: #1f1f1f;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  transition: 0.2s ease;
+}
+
+.themeToggle:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
+  transform: translateY(-1px);
+}

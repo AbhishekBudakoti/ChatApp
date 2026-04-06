@@ -1,11 +1,12 @@
 import "./chat.css";
-import Emojipicker from "emoji-picker-react";
+import EmojiPicker, { Theme } from "emoji-picker-react";
 import { MdEmojiEmotions } from "react-icons/md";
 import { useEffect, useState, useRef } from "react";
 import { arrayUnion, doc, getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { db, FIREBASE_COLLECTIONS, FIREBASE_FIELDS } from "../../lib/firbase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
+import { toast } from "react-toastify";
 
 const Chat = ({ onToggleDetail }) => {
   const [chat, setChat] = useState();
@@ -13,14 +14,27 @@ const Chat = ({ onToggleDetail }) => {
   const [text, setText] = useState("");
 
   const { currentUser } = useUserStore();
-  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChatStore();
+  const { chatId, user, isCurrentUserBlocked, isReceiverBlocked, resetChat } = useChatStore();
 
   const endRef = useRef(null);
+  const emojiRef = useRef(null);
+  const deleteConfirmRef = useRef(false);
 
   // Auto-scroll to bottom
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat?.[FIREBASE_FIELDS.MESSAGES]]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!emojiRef.current?.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Listen to chat updates
   useEffect(() => {
@@ -81,8 +95,9 @@ const Chat = ({ onToggleDetail }) => {
   }, [chatId, currentUser?.uid, user?.uid]);
 
   // Add emoji
-  const handleEmoji = (e) => {
-    setText((prev) => prev + e.emoji);
+  const handleEmoji = (emojiData) => {
+    if (!emojiData?.emoji) return;
+    setText((prev) => prev + emojiData.emoji);
   };
 
   // Send message
@@ -152,6 +167,7 @@ const Chat = ({ onToggleDetail }) => {
       });
 
       setText(""); // clear input
+      setOpen(false);
     } catch (error) {
       console.log(error);
     }
@@ -165,9 +181,10 @@ const Chat = ({ onToggleDetail }) => {
           <img src={user?.avatar || "./avtar.png"} alt="avatar" />
           <div className="text">
             <span>{user?.username || "Unknown User"}</span>
-            <p>Lorem ipsum dolor sit amet.</p>
+            <p>{user?.bio || "No bio yet"}</p>
           </div>
         </div>
+     
       </div>
 
       {/* Messages */}
@@ -202,11 +219,27 @@ const Chat = ({ onToggleDetail }) => {
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
           disabled={isCurrentUserBlocked || isReceiverBlocked}
         />
-        <div className="emoji">
-          <MdEmojiEmotions onClick={() => setOpen((prev) => !prev)} />
+        <div className="emoji" ref={emojiRef}>
+          <button
+            type="button"
+            className="emoji-button"
+            onClick={() => setOpen((prev) => !prev)}
+            aria-label="Toggle emoji picker"
+          >
+            <MdEmojiEmotions />
+          </button>
           {open && (
             <div className="picker">
-              <Emojipicker open={open} onEmojiClick={handleEmoji} />
+              <EmojiPicker
+                onEmojiClick={handleEmoji}
+                theme={
+                  document.body.getAttribute("data-theme") === "light"
+                    ? Theme.LIGHT
+                    : Theme.DARK
+                }
+                width={300}
+                height={380}
+              />
             </div>
           )}
         </div>

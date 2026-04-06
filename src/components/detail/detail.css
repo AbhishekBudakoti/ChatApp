@@ -72,25 +72,54 @@ flex: 1;
             }
         }
     }
-    button
+    .block-btn
     {
         padding:  5px 20px;
         background-color: var(--button-danger);
-        color: white;
+        color: var(--text-color);
         border: none;
         border-radius: 20px;
         cursor: pointer;
         font-weight: 500;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 
-        &:hover {
+        &:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(229, 62, 62, 0.4);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
         }
 
      
        
+    }
+
+    .delete-btn {
+        padding: 5px 20px;
+        background-color: var(--button-danger);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    .delete-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
+    }
+
+    .delete-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        box-shadow: none;
     }
    }
 

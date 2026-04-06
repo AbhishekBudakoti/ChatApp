@@ -39,6 +39,7 @@ export const FIREBASE_FIELDS = {
   USER: "user",
   AVATAR: "avatar",
   USERNAME: "username",
+  BIO: "bio",
   EMAIL: "email",
   UID: "uid",
 };

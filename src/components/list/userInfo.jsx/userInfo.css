@@ -7,7 +7,7 @@
     backdrop-filter: blur(10px);
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-    box-shadow: 0 0px 20px #667eea4d;
+    box-shadow: 0 0px 20px rgba(0, 0, 0, 0.45);
 }
 
 /* LEFT SIDE */
@@ -29,7 +29,12 @@
     font-weight: 500;
 }
 
-/* LOGOUT BUTTON */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .logout {
     color: white;
     font-size: 22px;
@@ -37,12 +42,12 @@
     border-radius: 10px;
     cursor: pointer;
     border: none;
-    background-color: #1E3A8A;
-    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.4);
+    background-color: #1f1f1f;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
     transition: 0.2s ease;
 }
 
 .logout:hover {
-    box-shadow: 0 6px 16px rgba(30, 58, 138, 0.5);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
     transform: translateY(-1px);
 }

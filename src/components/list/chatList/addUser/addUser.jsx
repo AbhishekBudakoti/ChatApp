@@ -16,7 +16,7 @@ import { useUserStore } from "../../../../lib/userStore";
 import { useChatStore } from "../../../../lib/chatStore";
 import { toast } from "react-toastify";
 
-const AddUser = ({ onClose }) => {
+const AddUser = ({ onClose, existingChatUserIds = [] }) => {
   const [searchedUser, setSearchedUser] = useState(null);
 
   const currentUser = useUserStore((state) => state.currentUser);
@@ -52,6 +52,12 @@ const AddUser = ({ onClose }) => {
 
       if (userData.id === currentUser.uid) {
         toast.warning("You cannot start a chat with yourself 😅");
+        return;
+      }
+
+      if (existingChatUserIds.includes(userData.id)) {
+        setSearchedUser(null);
+        toast.info("This user is already in your chat list");
         return;
       }
 

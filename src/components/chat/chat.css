@@ -13,7 +13,7 @@
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid var(--border-color);
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(10px);
 
 
@@ -21,17 +21,20 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            min-width: 0;
 
             img {
                 width: 60px;
                 height: 60px;
                 object-fit: cover;
+                border-radius: 50%;
             }
 
             .text {
                 display: flex;
                 flex-direction: column;
                 gap: 5px;
+                min-width: 0;
               
 
                 span {
@@ -43,8 +46,29 @@
                     font-size: 14px;
                     font-weight: 300;
                     color: var(--text-secondary);
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
             }
+        }
+
+        .delete-chat-btn {
+            padding: 8px 14px;
+            border: 1px solid var(--border-color);
+            background: var(--button-danger);
+            color: var(--text-color);
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .delete-chat-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
 
     }
@@ -77,12 +101,12 @@
                         padding: 10px 15px;
                         max-width: 250px;
                         border-radius: 18px 18px 4px 18px;
-                        color: white;
+                        color: var(--text-color);
                         overflow-wrap: anywhere;
                         word-break: break-word;
                         white-space: pre-wrap;
                         hyphens: auto;
-                        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
                     }
                 }
 
@@ -121,7 +145,7 @@
                     word-break: break-word;
                     white-space: pre-wrap;
                     hyphens: auto;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
                 }
 
             }
@@ -143,7 +167,7 @@
         border-top: 1px solid var(--border-color);
         gap: 5px;
         margin-top: auto;
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.03);
         backdrop-filter: blur(10px);
 
 
@@ -162,7 +186,7 @@
 
             &:focus {
                 border-color: var(--button-info-solid);
-                box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+                box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
             }
         }
 
@@ -170,10 +194,25 @@
             position: relative;
             font-size: x-large;
 
+            .emoji-button {
+                background: transparent;
+                border: none;
+                color: var(--text-color);
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                line-height: 1;
+                padding: 4px;
+            }
+
             .picker {
                 position: absolute;
-                bottom: 50px;
-                left: 0;
+                bottom: calc(100% + 10px);
+                right: 0;
+                z-index: 100;
+                max-width: min(90vw, 320px);
 
             }
 
@@ -182,18 +221,18 @@
         .send-button {
             padding: 8px 20px;
             border: none;
-            color: white;
+            color: var(--text-color);
             background: var(--button-info);
             border-radius: 20px;
             font-size: small;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 
             &:hover:not(:disabled) {
                 transform: translateY(-2px);
-                box-shadow: 0 6px 16px rgba(79, 172, 254, 0.5);
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
             }
 
             &:disabled {

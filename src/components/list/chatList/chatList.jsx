@@ -126,7 +126,10 @@ const ChatList = () => {
   };
 
 
-  const filteredChats = chats.filter((chat) => chat.user?.username.toLowerCase().includes(input.toLowerCase()));
+  const filteredChats = chats.filter((chat) =>
+    (chat.user?.username || "").toLowerCase().includes(input.toLowerCase())
+  );
+  const existingChatUserIds = chats.map((chat) => chat[FIREBASE_FIELDS.RECEIVER_ID]).filter(Boolean);
 
   const Icon = addMode ? FaMinus : FaPlus;
 
@@ -147,7 +150,7 @@ const ChatList = () => {
           className="items"
           key={chat[FIREBASE_FIELDS.CHAT_ID]}
           onClick={() => handleSelect(chat)}
-          style={{ backgroundColor: chat?.[FIREBASE_FIELDS.IS_SEEN] ? "transparent" : "#667eea" }}
+          style={{ backgroundColor: chat?.[FIREBASE_FIELDS.IS_SEEN] ? "transparent" : "rgba(255, 255, 255, 0.08)" }}
         >
           <img src={chat.user?.[FIREBASE_FIELDS.BLOCKED]?.includes(currentUser.uid) ? "./avtar.png" : chat.user?.[FIREBASE_FIELDS.AVATAR] || "./avtar.png"} alt="avatar" />
           <div className="text">
@@ -158,7 +161,12 @@ const ChatList = () => {
       ))}
 
       {/* Add User Panel */}
-      {addMode && <AddUser onClose={() => setAddMode(false)} />}
+      {addMode && (
+        <AddUser
+          onClose={() => setAddMode(false)}
+          existingChatUserIds={existingChatUserIds}
+        />
+      )}
     </div>
   );
 };
