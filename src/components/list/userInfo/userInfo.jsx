@@ -11,7 +11,7 @@ const UserInfo = () => {
   return (
     <div className="userInfo">
       <div className="left">
-        <img src={currentUser?.avatar || "./avtar.png"} alt="avatar" />
+        <img src={currentUser?.avatar || "/avtar.png"} alt="avatar" />
         <h2>{currentUser?.username}</h2>
       </div>
 

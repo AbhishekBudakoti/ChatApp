@@ -178,7 +178,7 @@ const Chat = ({ onToggleDetail }) => {
       {/* Top Bar */}
       <div className="top" onClick={onToggleDetail} style={{ cursor: "pointer" }}>
         <div className="user">
-          <img src={user?.avatar || "./avtar.png"} alt="avatar" />
+          <img src={user?.avatar || "/avtar.png"} alt="avatar" />
           <div className="text">
             <span>{user?.username || "Unknown User"}</span>
             <p>{user?.bio || "No bio yet"}</p>

@@ -79,7 +79,7 @@ const Detail = () => {
         <div className="detail">
             <div className="user">
 
-                <img src={user?.[FIREBASE_FIELDS.AVATAR] || "./avtar.png"} alt="" />
+                <img src={user?.[FIREBASE_FIELDS.AVATAR] || "/avtar.png"} alt="" />
                 <h2>{user?.[FIREBASE_FIELDS.USERNAME]}</h2>
               
            
@@ -108,11 +108,11 @@ const Detail = () => {
                     <div className="photos">
                         <div className="photoItem">
                             <div className="photoDetail">
-                                <img src="./avatar.png" alt="" />
+                                <img src="/avtar.png" alt="" />
                                 <span>photo_2024_2.png</span>
                             </div>
 
-                            <img src="./download.png" alt="download" />
+                            <img src="/avtar.png" alt="download" />
                         </div>
                     </div>
                 </div>
