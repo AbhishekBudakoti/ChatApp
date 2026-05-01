@@ -6,6 +6,7 @@ import AddUser from "./addUser/addUser";
 import { useUserStore } from "../../../lib/userStore";
 import { doc, onSnapshot, getDoc, updateDoc } from "firebase/firestore";
 import { db, FIREBASE_COLLECTIONS, FIREBASE_FIELDS } from "../../../lib/firbase";
+import { DEFAULT_AVATAR } from "../../../lib/assets";
 import { useChatStore } from "../../../lib/chatStore";
 
 
@@ -152,7 +153,7 @@ const ChatList = () => {
           onClick={() => handleSelect(chat)}
           style={{ backgroundColor: chat?.[FIREBASE_FIELDS.IS_SEEN] ? "transparent" : "rgba(255, 255, 255, 0.08)" }}
         >
-          <img src={chat.user?.[FIREBASE_FIELDS.BLOCKED]?.includes(currentUser.uid) ? "/avtar.png" : chat.user?.[FIREBASE_FIELDS.AVATAR] || "/avtar.png"} alt="avatar" />
+          <img src={chat.user?.[FIREBASE_FIELDS.BLOCKED]?.includes(currentUser.uid) ? DEFAULT_AVATAR : chat.user?.[FIREBASE_FIELDS.AVATAR] || DEFAULT_AVATAR} alt="avatar" />
           <div className="text">
             <span>{chat.user?.[FIREBASE_FIELDS.BLOCKED]?.includes(currentUser.uid) ? "Blocked User" : chat.user?.[FIREBASE_FIELDS.USERNAME] || "Unknown User" }</span>
             <p>{chat[FIREBASE_FIELDS.LAST_MESSAGE] || ""}</p>

@@ -4,6 +4,7 @@ import { MdEmojiEmotions } from "react-icons/md";
 import { useEffect, useState, useRef } from "react";
 import { arrayUnion, doc, getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { db, FIREBASE_COLLECTIONS, FIREBASE_FIELDS } from "../../lib/firbase";
+import { DEFAULT_AVATAR } from "../../lib/assets";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
 import { toast } from "react-toastify";
@@ -178,7 +179,7 @@ const Chat = ({ onToggleDetail }) => {
       {/* Top Bar */}
       <div className="top" onClick={onToggleDetail} style={{ cursor: "pointer" }}>
         <div className="user">
-          <img src={user?.avatar || "/avtar.png"} alt="avatar" />
+          <img src={user?.avatar || DEFAULT_AVATAR} alt="avatar" />
           <div className="text">
             <span>{user?.username || "Unknown User"}</span>
             <p>{user?.bio || "No bio yet"}</p>

@@ -1,5 +1,6 @@
 import "./detail.css";
 import { db, FIREBASE_COLLECTIONS, FIREBASE_FIELDS } from "../../lib/firbase";
+import { DEFAULT_AVATAR } from "../../lib/assets";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
 import { toast } from "react-toastify";
@@ -79,8 +80,9 @@ const Detail = () => {
         <div className="detail">
             <div className="user">
 
-                <img src={user?.[FIREBASE_FIELDS.AVATAR] || "/avtar.png"} alt="" />
-                <h2>{user?.[FIREBASE_FIELDS.USERNAME]}</h2>
+                <img src={user?.[FIREBASE_FIELDS.AVATAR] || DEFAULT_AVATAR} alt="" />
+ 
+                 <h2>{user?.[FIREBASE_FIELDS.USERNAME]}</h2>
               
            
                 <p>{user?.[FIREBASE_FIELDS.BIO] || "No bio yet"}</p>
@@ -108,11 +110,11 @@ const Detail = () => {
                     <div className="photos">
                         <div className="photoItem">
                             <div className="photoDetail">
-                                <img src="/avtar.png" alt="" />
+                                <img src={DEFAULT_AVATAR} alt="" />
                                 <span>photo_2024_2.png</span>
                             </div>
 
-                            <img src="/avtar.png" alt="download" />
+                            <img src={DEFAULT_AVATAR} alt="download" />
                         </div>
                     </div>
                 </div>
