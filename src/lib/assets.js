@@ -1,1 +1,2 @@
-export const DEFAULT_AVATAR = `${import.meta.env.BASE_URL}avtar.png`;
+import img from "../../public/avtar.png"
+export const DEFAULT_AVATAR = img
