@@ -152,10 +152,9 @@ const AddUser = ({ onClose, existingChatUserIds = [] }) => {
       {searchedUser && (
         <div className="user">
           <div className="detail">
-            <img
-              src={searchedUser[FIREBASE_FIELDS.AVATAR] || DEFAULT_AVATAR}
-              alt="avatar"
-            />
+            <img src="/avtar.png" alt="avatar" />
+
+
             <span>{searchedUser[FIREBASE_FIELDS.USERNAME]}</span>
           </div>
           <button onClick={handleAddUser}>Add User</button>

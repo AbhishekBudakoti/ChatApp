@@ -80,7 +80,7 @@ const Detail = () => {
         <div className="detail">
             <div className="user">
 
-                <img src={user?.[FIREBASE_FIELDS.AVATAR] || DEFAULT_AVATAR} alt="" />
+            <img src="/avtar.png" alt="avatar" />
  
                  <h2>{user?.[FIREBASE_FIELDS.USERNAME]}</h2>
               

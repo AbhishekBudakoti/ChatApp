@@ -1,2 +1,1 @@
-import img from "../../public/avtar.png"
-export const DEFAULT_AVATAR = img
+export const DEFAULT_AVATAR = "/avatar.png";

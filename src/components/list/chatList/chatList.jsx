@@ -61,22 +61,22 @@ const ChatList = () => {
         if (!chatData?.[FIREBASE_FIELDS.MESSAGES] || chatData[FIREBASE_FIELDS.MESSAGES].length === 0) return;
 
         const lastMessage = chatData[FIREBASE_FIELDS.MESSAGES][chatData[FIREBASE_FIELDS.MESSAGES].length - 1];
-        
+
         // Only update if this is a new message (not already the lastMessage)
         try {
           const userChatRef = doc(db, FIREBASE_COLLECTIONS.USER_CHATS, currentUser.uid);
           const userChatsSnapshot = await getDoc(userChatRef);
-          
+
           if (userChatsSnapshot.exists()) {
             const userChatData = userChatsSnapshot.data();
             const userChats = userChatData[FIREBASE_FIELDS.CHATS] || [];
             const chatIndex = userChats.findIndex((c) => c[FIREBASE_FIELDS.CHAT_ID] === chat[FIREBASE_FIELDS.CHAT_ID]);
-            
+
             if (chatIndex !== -1) {
               // Only update if the message is newer or different
               const currentLastMessage = userChats[chatIndex][FIREBASE_FIELDS.LAST_MESSAGE];
               const currentUpdatedAt = userChats[chatIndex][FIREBASE_FIELDS.UPDATED_AT] || 0;
-              
+
               if (lastMessage[FIREBASE_FIELDS.TEXT] !== currentLastMessage || lastMessage[FIREBASE_FIELDS.CREATED_AT] > currentUpdatedAt) {
                 userChats[chatIndex][FIREBASE_FIELDS.LAST_MESSAGE] = lastMessage[FIREBASE_FIELDS.TEXT];
                 // Only mark as unseen if the message is from the other person
@@ -102,7 +102,7 @@ const ChatList = () => {
   // ✅ Select chat & mark as seen
   const handleSelect = async (chat) => {
     try {
-   
+
       const userChats = chats.map((item) => {
         const { user, ...rest } = item;
         return rest;
@@ -140,7 +140,7 @@ const ChatList = () => {
       <div className="search">
         <div className="searchBar">
           <FaSearch />
-          <input type="text" placeholder="Search"  onChange={(e) => setInput(e.target.value)}/>
+          <input type="text" placeholder="Search" onChange={(e) => setInput(e.target.value)} />
         </div>
         <Icon className="add" onClick={() => setAddMode((prev) => !prev)} />
       </div>
@@ -153,9 +153,9 @@ const ChatList = () => {
           onClick={() => handleSelect(chat)}
           style={{ backgroundColor: chat?.[FIREBASE_FIELDS.IS_SEEN] ? "transparent" : "rgba(255, 255, 255, 0.08)" }}
         >
-          <img src={chat.user?.[FIREBASE_FIELDS.BLOCKED]?.includes(currentUser.uid) ? DEFAULT_AVATAR : chat.user?.[FIREBASE_FIELDS.AVATAR] || DEFAULT_AVATAR} alt="avatar" />
+          <img src="/avtar.png" alt="avatar" />
           <div className="text">
-            <span>{chat.user?.[FIREBASE_FIELDS.BLOCKED]?.includes(currentUser.uid) ? "Blocked User" : chat.user?.[FIREBASE_FIELDS.USERNAME] || "Unknown User" }</span>
+            <span>{chat.user?.[FIREBASE_FIELDS.BLOCKED]?.includes(currentUser.uid) ? "Blocked User" : chat.user?.[FIREBASE_FIELDS.USERNAME] || "Unknown User"}</span>
             <p>{chat[FIREBASE_FIELDS.LAST_MESSAGE] || ""}</p>
           </div>
         </div>

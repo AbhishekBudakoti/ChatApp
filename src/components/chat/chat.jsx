@@ -179,22 +179,21 @@ const Chat = ({ onToggleDetail }) => {
       {/* Top Bar */}
       <div className="top" onClick={onToggleDetail} style={{ cursor: "pointer" }}>
         <div className="user">
-          <img src={user?.avatar || DEFAULT_AVATAR} alt="avatar" />
+          <img src="/avtar.png" alt="avatar" />
           <div className="text">
             <span>{user?.username || "Unknown User"}</span>
             <p>{user?.bio || "No bio yet"}</p>
           </div>
         </div>
-     
+
       </div>
 
       {/* Messages */}
       <div className="center">
         {chat?.[FIREBASE_FIELDS.MESSAGES]?.map((message) => (
           <div
-            className={`message ${
-              message[FIREBASE_FIELDS.SENDER_ID] === currentUser?.uid ? "own" : ""
-            }`}
+            className={`message ${message[FIREBASE_FIELDS.SENDER_ID] === currentUser?.uid ? "own" : ""
+              }`}
             key={message[FIREBASE_FIELDS.CREATED_AT]}
           >
             <div className="text">
